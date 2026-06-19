@@ -1,0 +1,2 @@
+# Install the pinned lock (authoritative, integrity-manifested).
+-r requirements.lock

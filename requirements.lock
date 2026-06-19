@@ -1,0 +1,8 @@
+# Pinned dependency lock for the LP-Flow Monitor frozen artifact (v3).
+# Requires Python >= 3.11 (pandas 3.0.3 requires >= 3.11). Verified on CPython 3.12 and 3.14.
+# Full pinned closure (pandas + numpy + transitive deps). Part of the integrity manifest (manifest.py).
+pandas==3.0.3
+numpy==2.4.6
+python-dateutil==2.9.0.post0
+six==1.17.0
+tzdata==2026.2

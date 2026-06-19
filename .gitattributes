@@ -1,0 +1,7 @@
+# Force LF on checkout for all text files on every platform, so the raw-byte SHA-256 in the pinned
+# manifest (MANIFEST.sha256) stays reproducible after a fresh clone (Windows autocrlf would otherwise
+# rewrite LF -> CRLF and break the fail-closed integrity check).
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.gz binary

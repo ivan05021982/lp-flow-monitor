@@ -1,0 +1,37 @@
+{
+  "schema_version": "3.0.1",
+  "detector": "detect_monitoring_v3",
+  "description": "Input/output contract for the v3 fail-closed Uniswap V3 LP-flow monitor. The threshold pct=0.01 is INHERITED from the v2 descriptive characterization and has NOT been re-validated under v3's net-replenishment rule (a v3 re-characterization is pending).",
+  "input": {
+    "required_columns": ["date", "net_lp_flow_usd", "gross_lp_inflow_usd", "n_unpriced_legs"],
+    "rules": {
+      "date": "parseable date; unique; ascending as given; strictly consecutive calendar days (no gaps); emitted as 'date' by the v3 SQL",
+      "net_lp_flow_usd": "finite (no NaN/inf); negative = net outflow",
+      "gross_lp_inflow_usd": "finite; >= 0",
+      "n_unpriced_legs": "finite; must equal EXACTLY 0 on every day (any non-zero value, including negative, -> DATA_ERROR)",
+      "pool": "if pool_address/pool_label/pool is present, it must hold exactly one distinct value",
+      "window": "at least MIN_WINDOW_DAYS (14) rows; shorter windows -> DATA_ERROR (insufficient history)"
+    },
+    "parameter_pct": "the detector's pct argument must be a finite, positive number (else ValueError)"
+  },
+  "baseline_semantics": "Leakage for day i compares |net_i| to the mean of POSITIVE gross-inflow days in the up-to-7 prior calendar days (a partial, left-truncated window near the start). With no positive-inflow day in the lookback the baseline is 0 and the relative rule is skipped for day i. The first ~7 days act as warm-up.",
+  "statuses": ["QUIET", "RESOLVED", "PENDING", "FLAGGED", "DATA_ERROR"],
+  "output_fields": [
+    {"name": "status", "type": "string"},
+    {"name": "data_error_reason", "type": "string|null"},
+    {"name": "n_leakage_runs", "type": "int"},
+    {"name": "window_contains_qualifying_run", "type": "bool"},
+    {"name": "qualifying_run_start", "type": "string|null"},
+    {"name": "qualifying_run_end", "type": "string|null"},
+    {"name": "qualifying_run_outflow_usd", "type": "number|null"},
+    {"name": "qualifying_run_failed_replenishment", "type": "bool|null"},
+    {"name": "qualifying_run_persistent_memory", "type": "bool|null"},
+    {"name": "latest_run_start", "type": "string|null"},
+    {"name": "latest_run_end", "type": "string|null"},
+    {"name": "latest_run_outflow_usd", "type": "number|null"},
+    {"name": "latest_run_failed_replenishment", "type": "bool|null"},
+    {"name": "latest_run_persistent_memory", "type": "bool|null"},
+    {"name": "pct_threshold", "type": "number"},
+    {"name": "detector_version", "type": "string"}
+  ]
+}

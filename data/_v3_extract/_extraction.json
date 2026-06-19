@@ -1,0 +1,39 @@
+{
+    "extraction_utc":  "2026-06-19T13:09:33Z",
+    "window_start":  "2026-05-05",
+    "window_end":  "2026-06-18",
+    "pools":  [
+                  {
+                      "dataset":  "usdc_weth_500_eth",
+                      "chain":  "ethereum",
+                      "pool_address":  "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
+                      "query_id":  7757955,
+                      "execution_id":  "01KVG00HHZGHJW8QDVDZQ5W8KG",
+                      "csv_file":  "usdc_weth_500_eth.csv"
+                  },
+                  {
+                      "dataset":  "usdc_weth_500_arb",
+                      "chain":  "arbitrum",
+                      "pool_address":  "0xc6962004f452be9203591991d15f6b388e09e8d0",
+                      "query_id":  7757967,
+                      "execution_id":  "01KVG01FWS9S8ZKCAW4VXAGM4W",
+                      "csv_file":  "usdc_weth_500_arb.csv"
+                  },
+                  {
+                      "dataset":  "usdc_weth_500_base",
+                      "chain":  "base",
+                      "pool_address":  "0xd0b53d9277642d899df5c87a3966a349a798f224",
+                      "query_id":  7757974,
+                      "execution_id":  "01KVG02EB0F7J82ZS46QKMSQT0",
+                      "csv_file":  "usdc_weth_500_base.csv"
+                  },
+                  {
+                      "dataset":  "usdc_weth_500_op",
+                      "chain":  "optimism",
+                      "pool_address":  "0x1fb3cf6e48f1e7b10213e7b6d87d4c073c7fdb7b",
+                      "query_id":  7757988,
+                      "execution_id":  "01KVG0446HJ1S28878X1JWBMWK",
+                      "csv_file":  "usdc_weth_500_op.csv"
+                  }
+              ]
+}
