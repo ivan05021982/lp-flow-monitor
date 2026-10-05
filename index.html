@@ -72,7 +72,7 @@ footer { margin-top: 44px; color: var(--muted); font-size: 0.85rem; }
 <header>
 <h1>LP-Flow Monitor — Uniswap V3 USDC/WETH 0.05%</h1>
 <p class="lede">Daily liquidity-provider flow, from pool <code>Mint</code> and <code>Burn</code> events, on Ethereum, Arbitrum, Base and Optimism. A descriptive LP-outflow monitor: not a prediction, not a stress oracle. It shows what liquidity did, not why.</p>
-<p class="meta">Data through <strong>2026-10-04</strong> (UTC). Built 2026-10-05 21:31 UTC. Updated by hand after each weekly run: this page is not live.</p>
+<p class="meta">Data through <strong>2026-10-04</strong> (UTC). Built 2026-10-05 22:20 UTC. Updated by hand after each weekly run: this page is not live.</p>
 </header>
 
 <h2>Latest 45-day window</h2>
@@ -109,12 +109,12 @@ footer { margin-top: 44px; color: var(--muted); font-size: 0.85rem; }
 
 <h2 id="method">Data and method</h2>
 <ul>
-<li><strong>Events.</strong> Uniswap V3 pool <code>Mint</code> and <code>Burn</code> logs, read from public RPC nodes. Each chain is read from two independent nodes and the two sets of events are compared.</li>
+<li><strong>Events.</strong> Uniswap V3 pool <code>Mint</code> and <code>Burn</code> logs, read from public RPC nodes. On every run the last 14 days are also read from a second, independent node, and a chain is updated only if the two return the same events.</li>
 <li><strong>USD value.</strong> Token amounts times one price per token per UTC day: the mean of the 24 hourly DefiLlama prices of the token on Ethereum mainnet. The CSV below carries, for every day, the token amounts and the two prices used, so each dollar figure can be recomputed.</li>
 <li><strong>Status.</strong> <code>detect_monitoring_v2</code> v2.0.0 (source hash <code>035296e21284…</code>), the detector the weekly log has used since June 2026, kept unmodified in the repository. <code>QUIET</code>: no outflow run. <code>RESOLVED</code>: runs occurred, but every assessable run was replenished or did not persist. <code>PENDING</code>: a run is too close to the window's end to assess. <code>FLAGGED</code>: at least one fully assessable run failed replenishment and persisted. <code>detect_monitoring_v3</code> in the same repository is its fail-closed successor and is not what classifies these windows; the limits of v2 are listed in the <a href="https://github.com/ivan05021982/lp-flow-monitor#status--known-limitations">README</a>.</li>
 <li><strong>Change of source.</strong> Up to the window ending 2026-09-16 the weekly log was computed from Dune. Dune's free plan stopped running queries in September 2026, so later windows are computed from chain logs. The change was checked against the Dune extractions kept on disk: on every day covered by both (2026-04-21 to 2026-09-16) the number of Mint and Burn events per day is identical, and on each of the 108 historical 45-day windows of these four pools the detector returns the same status and the same outflow runs, with the window net differing by at most 0.03% of the window&#x27;s gross inflow. All daily figures on this page, including the days before the switch, are computed from chain logs with the price above.</li>
 </ul>
-<p><a href="data/daily_lp_flow.csv">daily_lp_flow.csv</a> (the charts) · <a href="data/monitoring_log.csv">monitoring_log.csv</a> (the weekly log, with the source of every row) · <a href="https://github.com/ivan05021982/lp-flow-monitor">repository</a></p>
+<p><a href="data/daily_lp_flow.csv">daily_lp_flow.csv</a> (the charts) · <a href="data/monitoring_log.csv">monitoring_log.csv</a> (the weekly log, with the source of every row) · <a href="https://github.com/ivan05021982/lp-flow-monitor/tree/main/onchain">extraction code</a> · <a href="https://github.com/ivan05021982/lp-flow-monitor">repository</a></p>
 
 <footer>Ivan Nania · MIT licence · Descriptive only. No prediction, no stress probability, no event attribution.</footer>
 </main>
