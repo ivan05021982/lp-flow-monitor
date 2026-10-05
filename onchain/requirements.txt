@@ -1,0 +1,6 @@
+# The on-chain extraction needs only an HTTP client. It is deliberately kept out of
+# requirements.lock, which is part of the pinned manifest of the v3 detector.
+requests>=2.31
+# Optional: verifies TLS through the operating system's certificate store. Needed only on
+# networks that intercept TLS (some antivirus products and corporate proxies).
+# truststore>=0.9

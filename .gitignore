@@ -12,3 +12,6 @@ venv/
 Thumbs.db
 .idea/
 .vscode/
+
+# Local cache of the on-chain extraction (events and hourly prices)
+onchain/_cache/

@@ -1,0 +1,32 @@
+{
+  "_note": "Keyless public RPC nodes. max_span = largest eth_getLogs block range each one accepted when measured; batch = eth_getLogs calls per HTTP request; header_batch = block headers per HTTP request. First provider of a chain is the working source, the second is the independent cross-check and the fallback. Arbitrum's official node returns blockTimestamp 0x0 on logs, so its timestamps are read from block headers: correct but slow, hence second. pools_file and cache_dir are relative to this file's folder.",
+  "measured": "2026-10-05",
+  "pools_file": "../pools.json",
+  "cache_dir": "_cache",
+  "chains": {
+    "ethereum": {
+      "providers": [
+        {"name": "tenderly", "url": "https://gateway.tenderly.co/public/mainnet", "max_span": 100000, "batch": 1},
+        {"name": "mevblocker", "url": "https://rpc.mevblocker.io", "max_span": 10000, "batch": 1}
+      ]
+    },
+    "arbitrum": {
+      "providers": [
+        {"name": "tenderly", "url": "https://arbitrum.gateway.tenderly.co", "max_span": 100000, "batch": 1},
+        {"name": "arbitrum-official", "url": "https://arb1.arbitrum.io/rpc", "max_span": 50000, "batch": 1, "header_batch": 100}
+      ]
+    },
+    "base": {
+      "providers": [
+        {"name": "base-official", "url": "https://mainnet.base.org", "max_span": 500, "batch": 10},
+        {"name": "tenderly", "url": "https://base.gateway.tenderly.co", "max_span": 1000, "batch": 1}
+      ]
+    },
+    "optimism": {
+      "providers": [
+        {"name": "optimism-official", "url": "https://mainnet.optimism.io", "max_span": 500000, "batch": 1},
+        {"name": "tenderly", "url": "https://optimism.gateway.tenderly.co", "max_span": 100000, "batch": 1}
+      ]
+    }
+  }
+}

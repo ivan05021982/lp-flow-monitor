@@ -80,6 +80,11 @@ python examples/run_detector_on_csv.py examples/sample_daily_flow_data_error.csv
    Dune needs a paid plan; its free plan is view-only.)
 3. **Classify:** `python examples/run_detector_on_csv.py your_export.csv --label "Your pool"`.
 
+**Without Dune.** [`onchain/`](onchain/) reads the same Mint/Burn events from public RPC nodes and
+writes the detector's input directly: `python onchain/daily_flow.py --start 2026-08-21 --end
+2026-10-04 --out daily.csv --detector-dir inputs`. It covers pools of USDC, USDT, WETH and WBTC on
+the four chains above and sits outside the pinned manifest; see [`onchain/README.md`](onchain/README.md).
+
 The detector requires four columns: `date`, `net_lp_flow_usd`, `gross_lp_inflow_usd`,
 `n_unpriced_legs` (all emitted by the v3 SQL template). Any day with `n_unpriced_legs` not exactly
 `0` — a Mint/Burn leg with a missing or non-positive price — yields `DATA_ERROR` (no silent zero).
@@ -162,14 +167,18 @@ episode, not the sign of the net.
 - **Coverage is 4 pools, not 8.**
 - **Reproducible scope:** the detector, example, integrity check and snapshot rebuild reproduce from
   this repo; the threshold-selection sweep does not (the labelled dev set is not included here).
+  The monitor page's daily CSV reproduces from `onchain/`, public nodes permitting; its weekly
+  log does not: the runner that writes it and the Dune extractions behind the rows up to the
+  window ending 2026-09-16 are not included.
 - **The threshold `0.01` is inherited from v2, not re-validated under v3's net rule** — a v3 dev-set
   re-characterization is pending (the qualitative "no clean separation" finding is expected to hold).
 - **The monitor page is a raw-flow view with statuses from v2, not v3** — it shows the daily net
   series and the weekly log as classified by the frozen `detect_monitoring_v2`, the detector the log
   has used since June 2026; it carries no `n_unpriced_legs`, schema or digest. Its daily series is
   computed from chain logs read from public RPC nodes and valued with the daily mean of hourly
-  DefiLlama prices, not with the SQL template in this repo; that extraction code is not published
-  here yet. Weekly-log rows up to the window ending 2026-09-16 were computed from Dune at the time.
+  DefiLlama prices, not with the SQL template in this repo; that extraction code is in
+  [`onchain/`](onchain/), outside the pinned manifest. Weekly-log rows up to the window ending
+  2026-09-16 were computed from Dune at the time.
   The Dune dashboard the page replaces is frozen at 2026-09-16.
 
 ## Repository layout
@@ -184,11 +193,13 @@ requirements.lock             Pinned closure (Python >= 3.11); requirements.txt 
 pools.json                    8 example pool configs (4 are in the log) — dynamic, not manifested
 sql/lp_flow_template.sql      Generic v3 Uniswap V3 daily LP-flow query (emits date, n_unpriced_legs)
 examples/                     Runnable example + synthetic CSVs (incl. a DATA_ERROR demo)
-tests/                        Adversarial + golden tests (20)
+tests/                        Adversarial + golden tests (20); offline tests of onchain/ (11)
+onchain/                      Mint/Burn extraction from public RPC nodes + daily CSV — NOT in the manifest
 scripts/build_v3_snapshot.py  Rebuilds the snapshot fail-closed (in the manifest)
 data/                         v3 snapshot + DATA_MANIFEST.json + raw extracts (_v3_extract/, _extraction.json)
 docs/claims_and_limits.md     What may / may not be claimed (the discipline, self-contained)
 docs/validation_summary.md    Descriptive dev-set validation (prior detector; v3 re-run pending)
+docs/onchain_extraction_contract.md  How the on-chain extraction was accepted against the Dune history
 ```
 
 ## License
