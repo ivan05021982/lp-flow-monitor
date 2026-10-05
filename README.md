@@ -4,8 +4,10 @@ A frozen, versioned detector + a generic Dune query template + an open prospecti
 **observing large, sustained, non-replenished LP outflows** on Uniswap V3 pools. Built only on
 direct on-chain Mint/Burn events.
 
-**Live dashboard:** https://dune.com/ivan_nania/lp-flow-monitor-uniswap-v3
-(a pre-v3 *raw-flow* view — see *Status & known limitations*).
+**Monitor page:** https://ivan05021982.github.io/lp-flow-monitor/ — daily net LP flow of the four
+pools and the weekly log, rebuilt after each weekly run (not live; a raw-flow view with v2 statuses —
+see *Status & known limitations*). The earlier Dune dashboard,
+https://dune.com/ivan_nania/lp-flow-monitor-uniswap-v3, is frozen at 2026-09-16.
 
 ---
 
@@ -74,7 +76,8 @@ python examples/run_detector_on_csv.py examples/sample_daily_flow_data_error.csv
 1. **Fork** [`sql/lp_flow_template.sql`](sql/lp_flow_template.sql) on Dune. Fill the placeholders
    for your chain / pool address / token addresses & decimals / window. [`pools.json`](pools.json)
    provides 8 example pool configs (4 are in the current log).
-2. **Run** the query and export the daily result as CSV.
+2. **Run** the query and export the daily result as CSV. (Since September 2026 running a query on
+   Dune needs a paid plan; its free plan is view-only.)
 3. **Classify:** `python examples/run_detector_on_csv.py your_export.csv --label "Your pool"`.
 
 The detector requires four columns: `date`, `net_lp_flow_usd`, `gross_lp_inflow_usd`,
@@ -161,9 +164,13 @@ episode, not the sign of the net.
   this repo; the threshold-selection sweep does not (the labelled dev set is not included here).
 - **The threshold `0.01` is inherited from v2, not re-validated under v3's net rule** — a v3 dev-set
   re-characterization is pending (the qualitative "no clean separation" finding is expected to hold).
-- **The live dashboard is a pre-v3 raw-flow view** — it shows the daily net/gross series only (no
-  `n_unpriced_legs`, status, schema, or digest) and still says "frozen detector available on
-  request". It will be relabelled / linked to this repo after publication.
+- **The monitor page is a raw-flow view with statuses from v2, not v3** — it shows the daily net
+  series and the weekly log as classified by the frozen `detect_monitoring_v2`, the detector the log
+  has used since June 2026; it carries no `n_unpriced_legs`, schema or digest. Its daily series is
+  computed from chain logs read from public RPC nodes and valued with the daily mean of hourly
+  DefiLlama prices, not with the SQL template in this repo; that extraction code is not published
+  here yet. Weekly-log rows up to the window ending 2026-09-16 were computed from Dune at the time.
+  The Dune dashboard the page replaces is frozen at 2026-09-16.
 
 ## Repository layout
 
